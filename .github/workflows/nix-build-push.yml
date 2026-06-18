@@ -1,0 +1,77 @@
+name: Build and Push Multi-Arch Image
+
+on:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runs-on: ubuntu-latest
+            system: x86_64-linux
+          - platform: linux/arm64
+            runs-on: ubuntu-24.04-arm
+            system: aarch64-linux
+    runs-on: ${{ matrix.runs-on }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v4
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+            system-features = ${{ matrix.system }}
+
+      - name: Build image
+        run: |
+          nix build .#packages.${{ matrix.system }}.dockerImage \
+            --extra-experimental-features nix-command \
+            --extra-experimental-features flakes
+          ls -la result
+
+      - name: Load and push to ghcr.io
+        run: |
+          IMAGE_NAME="ghcr.io/semi710/naste-server"
+          PLATFORM_TAG="${IMAGE_NAME}:${{ matrix.platform == 'linux/amd64' && 'amd64' || 'arm64' }}"
+          
+          docker load < result
+          docker tag "$IMAGE_NAME:latest" "$PLATFORM_TAG"
+          
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          docker push "$PLATFORM_TAG"
+
+  manifest:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create and push multi-arch manifest
+        run: |
+          IMAGE_NAME="ghcr.io/semi710/naste-server"
+          SHORT_SHA="$(git rev-parse --short HEAD)"
+          
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Create manifest for latest
+          docker manifest create "$IMAGE_NAME:latest" \
+            "$IMAGE_NAME:amd64" \
+            "$IMAGE_NAME:arm64"
+          docker manifest push "$IMAGE_NAME:latest"
+          
+          # Create manifest for SHA tag
+          docker manifest create "$IMAGE_NAME:$SHORT_SHA" \
+            "$IMAGE_NAME:amd64" \
+            "$IMAGE_NAME:arm64"
+          docker manifest push "$IMAGE_NAME:$SHORT_SHA"
