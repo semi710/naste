@@ -50,7 +50,7 @@ Private paste auth via `PRIVATE_USER` / `PRIVATE_PASS` env vars, or
 
 ## Naming
 
-- Repo: `nastebin` (GitHub: semi710/nastebin)
-- Flake URL: `github:semi710/naste` (short alias)
-- Go module: `github.com/semi710/nastebin`
-- Server binary: `naste-server` (renamed from `nastebin` in postInstall)
+- Repo: `naste` (GitHub: semi710/naste)
+- Flake URL: `github:semi710/naste`
+- Go module: `github.com/semi710/naste` (pending rename from `nastebin` in go.mod)
+- Server binary: `naste-server`

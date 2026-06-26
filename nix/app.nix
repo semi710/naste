@@ -53,5 +53,19 @@ in
       };
 
       apps.naste.program = lib.getExe self'.packages.naste;
+
+      apps.docs =
+        let
+          env = pkgs.python3.withPackages (
+            ps: with ps; [
+              mkdocs
+              mkdocs-material
+            ]
+          );
+        in
+        {
+          type = "app";
+          program = "${env}/bin/mkdocs";
+        };
     };
 }

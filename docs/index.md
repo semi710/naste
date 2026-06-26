@@ -181,6 +181,8 @@ password = "secret"
 
 ## Documentation
 
+Docs are served at [naste.semi.sh](https://naste.semi.sh). To preview locally: `just doc`
+
 - [CLI Usage](guides/cli.md) - All flags and options
 - [Docker](guides/docker.md) - Container deployment
 - [Nix](guides/nix.md) - Nix flake usage

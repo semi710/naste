@@ -1,5 +1,5 @@
 {
-  description = "Nastebin paste service";
+  description = "naste paste service";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

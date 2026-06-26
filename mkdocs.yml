@@ -1,9 +1,9 @@
-site_name: nastebin
+site_name: naste
 site_url: https://naste.semi.sh
 site_description: A minimal, self-hosted paste service for the command line
 site_author: Nikhil Singh
-repo_name: semi710/nastebin
-repo_url: https://github.com/semi710/nastebin
+repo_name: semi710/naste
+repo_url: https://github.com/semi710/naste
 
 theme:
   name: material
@@ -75,7 +75,7 @@ plugins:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/semi710/nastebin
+      link: https://github.com/semi710/naste
   generator: false
 
 copyright: 'Made with <span style="color: #ff6e40">&hearts;</span> by Nikhil - <a href="https://semi.sh">semi.sh</a>'
