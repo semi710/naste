@@ -9,7 +9,10 @@
     {
       apps.deploy.program = pkgs.writeShellApplication {
         name = "deploy";
-        runtimeInputs = [ pkgs.openssh pkgs.docker ];
+        runtimeInputs = [
+          pkgs.openssh
+          pkgs.docker
+        ];
         text = ''
           set -euo pipefail
 

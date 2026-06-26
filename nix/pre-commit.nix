@@ -1,17 +1,20 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 {
   imports = [
     (inputs.git-hooks + /flake-module.nix)
   ];
 
   perSystem =
-    { config, pkgs, ... }:
+    { config, ... }:
     {
       pre-commit.settings = {
         hooks = {
-          gofmt.enable = true;
           govet.enable = true;
           golangci-lint.enable = true;
+          treefmt = {
+            enable = true;
+            entry = "${lib.getExe config.treefmt.build.wrapper}";
+          };
         };
       };
     };

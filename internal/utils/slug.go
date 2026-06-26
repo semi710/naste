@@ -17,7 +17,6 @@ const (
 var reservedSlugs = map[string]bool{
 	"private": true,
 	"api":     true,
-	"install": true,
 	"health":  true,
 }
 
@@ -50,11 +49,6 @@ func Validate(slug string) error {
 		return &InvalidSlugError{Reason: "reserved", Message: "slug is reserved"}
 	}
 	return nil
-}
-
-// IsReserved returns true if the slug is a reserved path.
-func IsReserved(slug string) bool {
-	return reservedSlugs[strings.ToLower(slug)]
 }
 
 // InvalidSlugError indicates a slug failed validation.

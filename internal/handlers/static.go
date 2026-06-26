@@ -1,6 +1,9 @@
 package handlers
 
-import "net/http"
+import (
+	"net/http"
+	"strings"
+)
 
 // isBrowser returns true if the request appears to come from a web browser.
 func isBrowser(r *http.Request) bool {
@@ -8,26 +11,8 @@ func isBrowser(r *http.Request) bool {
 	if ua == "" {
 		return false
 	}
-	// Simple heuristic: browsers include Mozilla or common engine strings
-	return containsAny(ua, []string{"Mozilla", "Chrome", "Safari", "Firefox", "Edge", "Opera"})
-}
-
-func containsAny(s string, subs []string) bool {
-	for _, sub := range subs {
-		if contains(s, sub) {
-			return true
-		}
-	}
-	return false
-}
-
-func contains(s, sub string) bool {
-	return len(s) >= len(sub) && (s == sub || len(s) > 0 && containsHelper(s, sub))
-}
-
-func containsHelper(s, sub string) bool {
-	for i := 0; i <= len(s)-len(sub); i++ {
-		if s[i:i+len(sub)] == sub {
+	for _, b := range []string{"Mozilla", "Chrome", "Safari", "Firefox", "Edge", "Opera"} {
+		if strings.Contains(ua, b) {
 			return true
 		}
 	}
@@ -40,6 +25,7 @@ const pasteViewHTML = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>%s</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSIjMTYxYjIyIi8+PHRleHQgeD0iNTAiIHk9IjY4IiBmb250LXNpemU9IjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMjJkM2VlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXdlaWdodD0iYm9sZCI+TjwvdGV4dD48L3N2Zz4=">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'SF Mono',Monaco,'Courier New',monospace;font-size:15px;line-height:1.7;color:#e2e4e8;background:#0d1117;padding:0;margin:0}
@@ -77,95 +63,56 @@ const landingHTML = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>paste.semi.sh</title>
+<title>naste | paste service</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIiBmaWxsPSIjMTYxYjIyIi8+PHRleHQgeD0iNTAiIHk9IjY4IiBmb250LXNpemU9IjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjMjJkM2VlIiBmb250LWZhbWlseT0ibW9ub3NwYWNlIiBmb250LXdlaWdodD0iYm9sZCI+TjwvdGV4dD48L3N2Zz4=">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,-apple-system,sans-serif;line-height:1.6;color:#333;max-width:800px;margin:0 auto;padding:2rem;background:#fafafa}
-h1{font-size:2.5rem;margin-bottom:.5rem;color:#222}
-p.lead{color:#666;margin-bottom:2rem;font-size:1.1rem}
-section{margin-bottom:2.5rem}
-h2{font-size:1.3rem;margin-bottom:1rem;color:#444;border-bottom:2px solid #ddd;padding-bottom:.3rem}
-pre{background:#1e1e1e;color:#d4d4d4;padding:1rem;border-radius:6px;overflow-x:auto;font-size:.9rem;margin:.5rem 0}
-pre .comment{color:#6a9955}
-pre .kw{color:#569cd6}
-pre .str{color:#ce9178}
-code{background:#eee;padding:.15rem .4rem;border-radius:3px;font-size:.9rem}
-.install{background:#2ea44f;color:#fff;padding:1rem;border-radius:6px;margin:1rem 0}
-.install code{background:rgba(255,255,255,.15);color:#fff}
-ul{padding-left:1.5rem;margin:.5rem 0}
-li{margin:.3rem 0}
-a{color:#0366d6;text-decoration:none}
+body{font-family:'SF Mono',Monaco,'Courier New',monospace;font-size:15px;line-height:1.7;color:#e2e4e8;background:#0d1117;padding:2rem;max-width:800px;margin:0 auto;min-height:100vh}
+h1{font-size:1.5rem;color:#22d3ee;margin-bottom:1.5rem;font-weight:700}
+h2{font-size:1.1rem;color:#22d3ee;margin:2rem 0 1rem;font-weight:700}
+p{color:#8b949e;margin-bottom:1rem}
+a{color:#58a6ff;text-decoration:none}
 a:hover{text-decoration:underline}
-.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #ddd;color:#666;font-size:.9rem}
+pre{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:1rem;overflow-x:auto;margin:1rem 0;color:#d4d4d4}
+.comment{color:#6a9955}
+.kw{color:#569cd6}
+.str{color:#ce9178}
+.footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #30363d;color:#8b949e;font-size:.85rem}
 </style>
 </head>
 <body>
-<h1>paste.semi.sh</h1>
-<p class="lead">A minimal, self-hosted paste service for the command line.</p>
+<h1>naste — minimal paste service</h1>
 
-<section>
-<h2>Quick Install</h2>
-<div class="install">
-<code>curl -fsSL https://paste.semi.sh/install | sh</code>
-</div>
-<p>This installs the <code>naste</code> CLI to <code>/usr/local/bin/</code>.</p>
-</section>
+<p>A self-hosted paste service for the command line. No database. No frameworks. Just files. Host your own for privacy or provide it as a free service to others.</p>
 
-<section>
-<h2>Usage</h2>
-<pre><span class="comment"># Pipe any text to get a public URL</span>
-<span class="kw">cat</span> file.txt | naste
-<span class="comment"># → https://paste.semi.sh/abc123</span>
+<h2>Quick Start</h2>
+<pre><span class="comment"># Pipe any text</span>
+<span class="kw">echo</span> <span class="str">"hello world"</span> | naste
+<span class="comment"># → https://your-domain.com/abc123</span>
 
-<span class="comment"># Use a custom slug</span>
-<span class="kw">cat</span> file.txt | naste --slug logs
-<span class="comment"># → https://paste.semi.sh/logs</span>
+<span class="comment"># With a custom slug</span>
+<span class="kw">cat</span> deploy.sh | naste --slug deploy
 
-<span class="comment"># Create a private paste</span>
-<span class="kw">cat</span> file.txt | naste --private
-<span class="comment"># → https://paste.semi.sh/private/xyz789</span>
+<span class="comment"># Private paste</span>
+<span class="kw">cat</span> secrets.env | naste --private
 
-<span class="comment"># Private paste with custom slug</span>
-<span class="kw">cat</span> file.txt | naste --private --slug serverlog
+<span class="comment"># Install via go</span>
+go install github.com/semi710/naste/cmd/naste@latest
+
+<span class="comment"># Or run with nix (no install needed)</span>
+echo "hello world" | nix run github:semi710/naste#naste --
 </pre>
-</section>
 
-<section>
-<h2>API</h2>
-<p>All endpoints accept and return raw text or JSON.</p>
-<pre>POST /api/paste         <span class="comment"># Create a new paste</span>
-PUT  /api/paste/{slug}  <span class="comment"># Overwrite an existing paste</span>
-GET  /{slug}            <span class="comment"># Retrieve a public paste</span>
-GET  /private/{slug}    <span class="comment"># Retrieve a private paste (requires auth)</span>
+<h2>API Endpoints</h2>
+<pre>POST /api/paste         <span class="comment"># Create paste</span>
+GET  /{slug}            <span class="comment"># View paste (HTML in browser, raw with curl)</span>
+GET  /{slug}?raw=1      <span class="comment"># Force raw text</span>
+GET  /private/{slug}    <span class="comment"># Private paste (Basic Auth)</span>
 GET  /health            <span class="comment"># Health check</span>
-GET  /install           <span class="comment"># CLI install script</span>
 </pre>
-</section>
-
-<section>
-<h2>Features</h2>
-<ul>
-<li>No database — files only</li>
-<li>Public and private pastes</li>
-<li>Custom slugs</li>
-<li>HTTP Basic Auth for private content</li>
-<li>Single binary deployment</li>
-<li>10 MB size limit</li>
-</ul>
-</section>
-
-<section>
-<h2>CLI Config</h2>
-<p>Create <code>~/.config/naste/config.toml</code>:</p>
-<pre>[paste]
-endpoint = "https://paste.semi.sh"
-user = "your_username"
-password = "your_password"
-</pre>
-</section>
 
 <div class="footer">
-<a href="https://github.com/semi710/nastebin">source</a>
+<a href="https://naste.semi.sh">docs</a> &middot; <a href="https://github.com/semi710/naste">source on github</a>
 </div>
 </body>
 </html>
