@@ -4,11 +4,14 @@
     {
       config,
       pkgs,
-      self',
       ...
     }:
     {
-      formatter = pkgs.nixfmt;
+      treefmt = {
+        projectRootFile = "flake.nix";
+        programs.nixfmt.enable = true;
+        programs.gofmt.enable = true;
+      };
 
       devShells.default = pkgs.mkShell {
         name = "go-devshell";
@@ -18,6 +21,8 @@
           gopls
           delve
           golangci-lint
+          air
+          just
         ];
         shellHook = ''
           echo 1>&2 "go: $(go version)"

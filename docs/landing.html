@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="naste - A minimal, self-hosted paste service for the command line">
+<title>naste</title>
+<style>
+:root {
+  --bg: #0a0e17;
+  --bg-secondary: #111827;
+  --border: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #64748b;
+  --accent: #22d3ee;
+  --accent-dim: #0891b2;
+  --keyword: #f472b6;
+  --string: #a3e635;
+  --function: #c084fc;
+  --number: #fb923c;
+  --comment: #475569;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 4rem 2rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ascii-logo {
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--accent);
+  margin-bottom: 2rem;
+  white-space: pre;
+  overflow-x: auto;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.tagline {
+  font-size: 18px;
+  color: var(--text-muted);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.3s forwards;
+}
+
+.tagline span { color: var(--text); }
+
+@keyframes fadeIn { to { opacity: 1; } }
+
+.terminal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: slideUp 0.6s ease 0.5s forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.terminal-header {
+  background: rgba(255,255,255,0.03);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dot { width: 12px; height: 12px; border-radius: 50%; }
+.dot.red { background: #ef4444; }
+.dot.yellow { background: #eab308; }
+.dot.green { background: #22c55e; }
+
+.terminal-title {
+  margin-left: 0.5rem;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.terminal-body { padding: 1.5rem; overflow-x: auto; }
+
+.prompt { color: var(--accent); }
+.command { color: var(--text); }
+.output {
+  color: var(--text-muted);
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.keyword { color: var(--keyword); }
+.string { color: var(--string); }
+.function { color: var(--function); }
+.number { color: var(--number); }
+.comment { color: var(--comment); }
+
+section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards;
+}
+
+section:nth-child(3) { animation-delay: 0.6s; }
+section:nth-child(4) { animation-delay: 0.7s; }
+section:nth-child(5) { animation-delay: 0.8s; }
+section:nth-child(6) { animation-delay: 0.9s; }
+
+h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+h2::before {
+  content: '#';
+  color: var(--accent-dim);
+}
+
+p {
+  margin-bottom: 1rem;
+  color: var(--text-muted);
+}
+
+p strong { color: var(--text); }
+
+pre {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.25rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+  font-size: 14px;
+}
+
+code { font-family: 'SF Mono', Monaco, monospace; }
+
+.inline-code {
+  background: var(--bg-secondary);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.feature {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: border-color 0.2s;
+}
+
+.feature:hover { border-color: var(--accent-dim); }
+
+.feature-icon {
+  font-size: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.feature h3 {
+  font-size: 15px;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.feature p {
+  font-size: 13px;
+  margin: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 14px;
+}
+
+th, td {
+  text-align: left;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+td { color: var(--text-muted); }
+tr:hover td { color: var(--text); }
+
+.footer {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer a:hover { text-decoration: underline; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (max-width: 600px) {
+  .ascii-logo { font-size: 8px; }
+  .hero { padding: 2rem 1rem 1rem; }
+  section { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<script>
+(function() {
+  const path = window.location.pathname;
+  const slug = path.replace(/^\//, '').split('/')[0];
+  if (slug && slug !== '' && !slug.includes('.') && slug !== 'index') {
+    const pasteServer = localStorage.getItem('naste-server') || 'https://paste.semi.sh';
+    window.location.href = pasteServer + '/' + slug;
+  }
+})();
+</script>
+
+<div class="hero">
+<pre class="ascii-logo">
+ ███╗   ██╗ █████╗ ███████╗████████╗███████╗
+ ████╗  ██║██╔══██╗██╔════╝╚══██╔══╝██╔════╝
+ ██╔██╗ ██║███████║███████╗   ██║   █████╗  
+ ██║╚██╗██║██╔══██║╚════██║   ██║   ██╔══╝  
+ ██║ ╚████║██║  ██║███████║   ██║   ███████╗
+ ╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝
+</pre>
+  <p class="tagline">A minimal, self-hosted paste service for the command line. <span>No database. No frameworks. Just files.</span></p>
+
+  <div class="terminal">
+    <div class="terminal-header">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+      <span class="terminal-title">bash</span>
+    </div>
+    <div class="terminal-body">
+      <div><span class="prompt">$</span> <span class="command">echo "hello world" | naste</span></div>
+      <div class="output">https://paste.semi.sh/abc123</div>
+      
+      <div><span class="prompt">$</span> <span class="command">naste deploy.sh -s deploy</span></div>
+      <div class="output">https://paste.semi.sh/deploy</div>
+      
+      <div><span class="prompt">$</span> <span class="command">cat secrets.env | naste -p -s secrets</span></div>
+      <div class="output">https://paste.semi.sh/private/secrets</div>
+      
+      <div><span class="prompt">$</span> <span class="cursor"></span></div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <h2>Install</h2>
+  <pre><code><span class="comment"># Install via go</span>
+go install github.com/semi710/nastebin/cmd/naste@latest
+
+<span class="comment"># Or run with nix (no install needed)</span>
+echo "hello world" | nix run github:semi710/nastebin#naste --</code></pre>
+</section>
+
+<section>
+  <h2>Usage</h2>
+  <pre><code><span class="comment"># Pipe from stdin</span>
+echo "hello world" | naste
+cat file.go | naste
+
+<span class="comment"># File argument (auto-detects language)</span>
+naste main.go
+naste deploy.sh
+naste config.yaml
+
+<span class="comment"># Custom slug</span>
+naste file.txt -s myfile
+
+<span class="comment"># Private paste</span>
+naste secrets.env -p -s secrets
+
+<span class="comment"># Force overwrite</span>
+naste updated.go -f -s mycode
+
+<span class="comment"># Specify language</span>
+cat code.txt | naste -l go</code></pre>
+</section>
+
+<section>
+  <h2>Features</h2>
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">&#9889;</div>
+      <h3>Zero Database</h3>
+      <p>Filesystem-based storage. No PostgreSQL, no MongoDB, no Redis.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#128274;</div>
+      <h3>Private Pastes</h3>
+      <p>HTTP Basic Auth for sensitive content. No accounts needed.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#127991;&#65039;</div>
+      <h3>Custom Slugs</h3>
+      <p>Readable URLs like <code class="inline-code">/deploy-script</code> instead of random IDs.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#127912;</div>
+      <h3>Syntax Highlighting</h3>
+      <p>Auto-detects language from file extension. Dark theme in browser.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#128230;</div>
+      <h3>Single Binary</h3>
+      <p>One Go binary. Deploy anywhere in seconds.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">&#128051;</div>
+      <h3>Docker Ready</h3>
+      <p>Multi-arch images (amd64 + arm64) via GitHub Actions.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Configuration</h2>
+  <table>
+    <thead>
+      <tr><th>Variable</th><th>Default</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code class="inline-code">PORT</code></td><td>8080</td><td>HTTP listen port</td></tr>
+      <tr><td><code class="inline-code">DATA_DIR</code></td><td>/data/paste</td><td>Storage directory</td></tr>
+      <tr><td><code class="inline-code">PRIVATE_USER</code></td><td>(empty)</td><td>Username for private pastes</td></tr>
+      <tr><td><code class="inline-code">PRIVATE_PASS</code></td><td>(empty)</td><td>Password for private pastes</td></tr>
+    </tbody>
+  </table>
+  
+  <p>Create <code class="inline-code">~/.config/naste/config.toml</code> for CLI defaults:</p>
+  <pre><code>endpoint = "https://paste.semi.sh"
+user = "admin"
+password = "secret"</code></pre>
+</section>
+
+<section>
+  <h2>Deploy</h2>
+  <p><strong>Docker</strong> (recommended):</p>
+  <pre><code>docker run -d \\
+  --name naste \\
+  -p 8080:8080 \\
+  -e PRIVATE_USER=admin \\
+  -e PRIVATE_PASS=secret \\
+  -v /var/lib/naste/data:/data/paste \\
+  ghcr.io/semi710/naste-server:latest</code></pre>
+  
+  <p><strong>Nix</strong> (one-liner deploy):</p>
+  <pre><code><span class="comment"># Deploy locally</span>
+nix run github:semi710/nastebin#deploy
+
+<span class="comment"># Deploy to remote server</span>
+nix run github:semi710/nastebin#deploy -- user@server</code></pre>
+  
+  <p><strong>Tailscale</strong> (no domain needed):</p>
+  <pre><code>sudo tailscale funnel 8080
+<span class="comment"># &#8594; https://your-machine.tailnet-name.ts.net</span></code></pre>
+</section>
+
+<section>
+  <h2>API</h2>
+  <pre><code><span class="comment"># Create paste</span>
+POST /api/paste
+Headers: X-Slug, X-Private, X-Lang
+Body: raw text
+
+<span class="comment"># Retrieve paste</span>
+GET /{slug}           <span class="comment"># Browser: HTML with syntax highlighting</span>
+GET /{slug}?raw=1     <span class="comment"># Raw text</span>
+
+<span class="comment"># Private paste</span>
+GET /private/{slug}   <span class="comment"># Requires Basic Auth</span>
+
+<span class="comment"># Health check</span>
+GET /health</code></pre>
+</section>
+
+<div class="footer">
+  <p>
+    <a href="https://github.com/semi710/nastebin">source</a> &middot; 
+    MIT license &middot; 
+    built with Go and stubborn minimalism
+  </p>
+</div>
+
+</body>
+</html>

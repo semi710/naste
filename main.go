@@ -14,6 +14,8 @@ import (
 	"github.com/semi710/nastebin/internal/storage"
 )
 
+var version = "dev"
+
 func main() {
 	cfg := config.Load()
 
@@ -41,7 +43,7 @@ func main() {
 	}
 
 	go func() {
-		log.Printf("naste-server listening on %s", server.Addr)
+		log.Printf("naste-server %s listening on %s", version, server.Addr)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("server: %v", err)
 		}

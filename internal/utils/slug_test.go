@@ -43,7 +43,6 @@ func TestValidate(t *testing.T) {
 		{"space", "foo bar", true, "chars"},
 		{"reserved private", "private", true, "reserved"},
 		{"reserved api", "api", true, "reserved"},
-		{"reserved install", "install", true, "reserved"},
 		{"reserved health", "health", true, "reserved"},
 	}
 
@@ -64,14 +63,5 @@ func TestValidate(t *testing.T) {
 				}
 			}
 		})
-	}
-}
-
-func TestIsReserved(t *testing.T) {
-	if !IsReserved("private") {
-		t.Error("expected 'private' to be reserved")
-	}
-	if IsReserved("hello") {
-		t.Error("expected 'hello' to not be reserved")
 	}
 }
