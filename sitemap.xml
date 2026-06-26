@@ -2,34 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://naste.semi.sh/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/api/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/guides/cli/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/guides/docker/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/guides/home-manager/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/guides/nix/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/guides/nixos/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
     </url>
     <url>
          <loc>https://naste.semi.sh/guides/reverse-proxy/</loc>
-         <lastmod>2026-06-25</lastmod>
+         <lastmod>2026-06-26</lastmod>
+    </url>
+    <url>
+         <loc>https://naste.semi.sh/memory/context/</loc>
+         <lastmod>2026-06-26</lastmod>
+    </url>
+    <url>
+         <loc>https://naste.semi.sh/memory/decisions/</loc>
+         <lastmod>2026-06-26</lastmod>
     </url>
 </urlset>

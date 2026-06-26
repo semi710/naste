@@ -694,6 +694,129 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Memory
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Memory
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory/context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Context
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../memory/decisions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Decisions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -860,17 +983,17 @@
 <tr>
 <td><code>packages.default</code></td>
 <td>derivation</td>
-<td><code>naste-server</code> binary</td>
-</tr>
-<tr>
-<td><code>packages.naste-server</code></td>
-<td>derivation</td>
-<td>Same as default (alias)</td>
+<td><code>naste</code> CLI binary</td>
 </tr>
 <tr>
 <td><code>packages.naste</code></td>
 <td>derivation</td>
-<td><code>naste</code> CLI binary</td>
+<td><code>naste</code> CLI binary (same as default)</td>
+</tr>
+<tr>
+<td><code>packages.naste-server</code></td>
+<td>derivation</td>
+<td><code>naste-server</code> binary</td>
 </tr>
 <tr>
 <td><code>packages.dockerImage</code></td>
@@ -916,21 +1039,21 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>nix<span class="w"> </span>run<span class="w"> </span>github:semi710/naste#naste<span class="w"> </span>--
 </code></pre></div>
 <h2 id="build">Build<a class="headerlink" href="#build" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Build server binary</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Build CLI binary (default)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>nix<span class="w"> </span>build<span class="w"> </span>github:semi710/naste
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Build CLI binary</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>nix<span class="w"> </span>build<span class="w"> </span>github:semi710/naste#naste
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Build server binary</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>nix<span class="w"> </span>build<span class="w"> </span>github:semi710/naste#naste-server
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Build Docker image</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>nix<span class="w"> </span>build<span class="w"> </span>github:semi710/naste#dockerImage
 </code></pre></div>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Install CLI to profile</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>nix<span class="w"> </span>profile<span class="w"> </span>install<span class="w"> </span>github:semi710/naste#naste
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Install CLI to profile (default)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>nix<span class="w"> </span>profile<span class="w"> </span>install<span class="w"> </span>github:semi710/naste
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Install server to profile</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>nix<span class="w"> </span>profile<span class="w"> </span>install<span class="w"> </span>github:semi710/naste
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>nix<span class="w"> </span>profile<span class="w"> </span>install<span class="w"> </span>github:semi710/naste#naste-server
 </code></pre></div>
 <h2 id="deploy-script">Deploy Script<a class="headerlink" href="#deploy-script" title="Permanent link">&para;</a></h2>
 <p>The flake includes a deploy app that wraps Docker deployment with config persistence:</p>
@@ -972,12 +1095,13 @@
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>just<span class="w"> </span>run-auth<span class="w">     </span><span class="c1"># Run server with auth</span>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>just<span class="w"> </span><span class="nb">test</span><span class="w">         </span><span class="c1"># Run tests</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>just<span class="w"> </span>lint<span class="w">         </span><span class="c1"># golangci-lint + go vet</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>just<span class="w"> </span>image<span class="w">        </span><span class="c1"># Build Docker image via Nix</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>just<span class="w"> </span>image-load<span class="w">   </span><span class="c1"># Build and load into Docker</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>just<span class="w"> </span>deploy<span class="w">       </span><span class="c1"># Deploy locally via Nix</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>just<span class="w"> </span>deploy-remote<span class="w"> </span>user@host<span class="w">  </span><span class="c1"># Deploy to remote server</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>just<span class="w"> </span>doc<span class="w">          </span><span class="c1"># Serve docs locally</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>just<span class="w"> </span>clean<span class="w">        </span><span class="c1"># Remove build artifacts</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>just<span class="w"> </span>fmt<span class="w">          </span><span class="c1"># Format nix + go via treefmt</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>just<span class="w"> </span>image<span class="w">        </span><span class="c1"># Build Docker image via Nix</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>just<span class="w"> </span>image-load<span class="w">   </span><span class="c1"># Build and load into Docker</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>just<span class="w"> </span>deploy<span class="w">       </span><span class="c1"># Deploy locally via Nix</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>just<span class="w"> </span>deploy-remote<span class="w"> </span>user@host<span class="w">  </span><span class="c1"># Deploy to remote server</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>just<span class="w"> </span>doc<span class="w">          </span><span class="c1"># Serve docs locally</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>just<span class="w"> </span>clean<span class="w">        </span><span class="c1"># Remove build artifacts</span>
 </code></pre></div>
 
 
